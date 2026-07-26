@@ -1,0 +1,57 @@
+var createError = require('http-errors');
+var express = require('express');
+var path = require('path');
+var cookieParser = require('cookie-parser');
+var logger = require('morgan');
+
+const indexRouter = require('./app_server/routes/index');
+const usersRouter = require('./app_server/routes/users');
+const travelRouter = require('./app_server/routes/travel');
+var handlebars = require('hbs');
+
+var app = express();
+
+console.log("APP.JS LOADED");
+console.log("TRAVEL ROUTER:", travelRouter);
+
+// view engine setup
+app.set('views', path.join(__dirname, 'app_server', 'views'));
+
+// register handlebars partials (https://www.npmjs.com/package/hbs)
+handlebars.registerPartials(__dirname + '/app_server/views/partials');
+
+app.set('view engine', 'hbs');
+
+app.use(logger('dev'));
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+app.use(cookieParser());
+app.use(express.static(path.join(__dirname, 'public')));
+
+app.use('/', indexRouter);
+app.use('/users', usersRouter);
+app.use('/travel', travelRouter);
+console.log('/travel', travelRouter);
+
+app.use(function (req, res, next) {
+    console.log("REQUEST RECEIVED:", req.method, req.originalUrl);
+    next();
+});
+
+// catch 404 and forward to error handler
+app.use(function(req, res, next) {
+  next(createError(404));
+});
+
+// error handler
+app.use(function(err, req, res, next) {
+  // set locals, only providing error in development
+  res.locals.message = err.message;
+  res.locals.error = req.app.get('env') === 'development' ? err : {};
+
+  // render the error page
+  res.status(err.status || 500);
+  res.render('error');
+});
+
+module.exports = app;

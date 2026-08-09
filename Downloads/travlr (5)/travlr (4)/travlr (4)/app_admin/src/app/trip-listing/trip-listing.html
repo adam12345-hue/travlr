@@ -1,0 +1,11 @@
+<div class="trip-toolbar">
+  <button type="button" (click)="addTrip()" class="btn btn-info">
+    Add Trip
+  </button>
+</div>
+
+<div class="trip-grid">
+  <app-trip-card *ngFor="let trip of trips"
+                 [trip]="trip">
+  </app-trip-card>
+</div>

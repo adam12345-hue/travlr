@@ -1,0 +1,25 @@
+<div class="trip-card">
+  <div class="trip-name">{{ trip.name }}</div>
+
+  <img class="trip-image"
+       [src]="'/images/' + trip.image"
+       [alt]="trip.name">
+
+  <div class="trip-content">
+    <p>{{ trip.resort }}</p>
+
+    <p>
+      {{ trip.length }} — ${{ trip.perPerson }} per person
+    </p>
+
+    <div class="trip-description"
+         [innerHTML]="trip.description">
+    </div>
+
+    <button type="button"
+            class="btn btn-info edit-button"
+            (click)="editTrip()">
+      Edit Trip
+    </button>
+  </div>
+</div>
